@@ -90,7 +90,7 @@
                 Related Anime
             </h2>
             <div class="mt-8">
-                <AnimeList pagination={false} itemPerRows={6} anime={related_anime} />
+                @livewire('anime-list', ['lazy' => true, 'anime_id' => $anime->anime_id])
             </div>
         </div>
     </div>

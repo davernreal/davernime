@@ -20,7 +20,7 @@ class LicensorResource extends Resource
 
     protected static ?string $navigationGroup = 'Master';
 
-    protected static ?string $navigationIcon = 'fas-certificate';
+    protected static ?string $navigationIcon = 'heroicon-s-queue-list';
 
     public static function getNavigationBadge(): ?string
     {

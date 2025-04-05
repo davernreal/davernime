@@ -20,7 +20,7 @@ class ProducerResource extends Resource
 
     protected static ?string $navigationGroup = 'Master';
 
-    protected static ?string $navigationIcon = 'fas-video';
+    protected static ?string $navigationIcon = 'heroicon-s-queue-list';
 
     public static function getNavigationBadge(): ?string
     {

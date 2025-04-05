@@ -21,7 +21,7 @@ class GenreResource extends Resource
 
     protected static ?string $model = Genre::class;
 
-    protected static ?string $navigationIcon = 'fas-masks-theater';
+    protected static ?string $navigationIcon = 'heroicon-s-queue-list';
 
     public static function getNavigationBadge(): ?string
     {
