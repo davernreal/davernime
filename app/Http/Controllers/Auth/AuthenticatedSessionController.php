@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        return view('pages.auth.login');
+        return view('pages.auth.login', [
+            // 'redirect' => $request->query('redirect') ?? null,
+            'url' => $request->query('redirect') ? route('login.store', ['redirect' => $request->query('redirect')]) : route('login.store')
+        ]);
     }
 
     public function store(LoginRequest $request)
@@ -20,7 +23,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect(route('home.index'));
+        $redirect = $request->query('redirect') ?? route('home.index');
+        return redirect($redirect);
     }
 
     public function destroy(Request $request)

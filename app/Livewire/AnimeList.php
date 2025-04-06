@@ -32,21 +32,29 @@ class AnimeList extends Component
 
     public function loadMore()
     {
-        $response = Http::get('http://127.0.0.1:5000/anime/' . $this->anime_id, [
-            'page' => $this->page,
-            'page_size' => $this->perPage,
-        ]);
+        try {
+            $response = Http::get('http://127.0.0.1:5000/anime/' . $this->anime_id, [
+                'page' => $this->page,
+                'page_size' => $this->perPage,
+            ]);
 
-        $data = $response->json();
-        $recommendation_ids = $data['recommendations'] ?? [];
+            $data = $response->json();
+            $recommendation_ids = $data['recommendations'] ?? [];
 
-        $newAnimes = Anime::whereIn('anime_id', $recommendation_ids)->get();
+            $newAnimes = Anime::whereIn('anime_id', $recommendation_ids)
+                ->orderByRaw('FIELD(anime_id, ' . implode(',', $recommendation_ids) . ')')
+                ->get();
 
-        $this->animes = $this->animes->merge($newAnimes)->unique('anime_id')->values();
+            $this->animes = $this->animes->merge($newAnimes)->unique('anime_id')->values();
 
-        $this->page++;
+            $this->page++;
 
-        if (count($recommendation_ids) < $this->perPage || (($this->page - 1) * $this->perPage) >= 50) {
+            if (count($recommendation_ids) < $this->perPage || (($this->page - 1) * $this->perPage) >= 50) {
+                $this->hasMore = false;
+            }
+        } catch (\Exception $e) {
+            logger()->error('Failed to fetch recommendations: ' . $e->getMessage());
+
             $this->hasMore = false;
         }
     }

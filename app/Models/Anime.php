@@ -53,4 +53,10 @@ class Anime extends Model
     {
         return $this->belongsToMany(Studio::class, 'anime_studios', 'anime_id', 'studio_id');
     }
+
+    public function favoredBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_favorites', 'anime_id', 'user_id', 'anime_id', 'id')
+                    ->withTimestamps();
+    }
 }

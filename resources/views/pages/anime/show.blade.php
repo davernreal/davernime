@@ -11,25 +11,30 @@
 @section('content')
     <x-navbar />
 
-    <div class="relative w-full bg-gray-200 bg-cover bg-center pt-[300px] lg:pt-[500px]" id="background">
-        <div class="absolute inset-0 flex w-full items-end bg-black/40 pb-8 backdrop-blur-lg">
+    <div class="relative w-full bg-gray-200 bg-cover bg-center" id="background">
+        <div class="relative inset-0 flex w-full items-end bg-black/40 pb-8 backdrop-blur-lg pt-10">
             <div class="container mx-auto py-4">
-                <div class="flex flex-row items-end gap-4">
-                    <div>
+                <div class="flex flex-row items-start lg:items-end gap-4">
+                    <div class="">
                         <img src="{{ $anime->image_url }}" class="aspect-3/4 h-[200px] rounded-xl object-cover lg:h-[290px]"
                             alt="" />
                     </div>
-                    <div class="mt-4 flex w-[350px] flex-col lg:w-[700px]">
-                        <a href="#">
-                            <div class="badge badge-neutral">{{ $anime->type }}</div>
-                        </a>
-                        <p class="text-2xl font-bold text-white">{{ $anime->title }}</p>
-                        <p class="text-base text-gray-100">{{ $anime->english_title }}</p>
-                        <p class="text-base text-gray-100">{{ $anime->other_title }}</p>
-                        <div class="mt-2 flex flex-wrap gap-1 lg:w-[500px]">
-                            @foreach ($genres as $genre)
-                                <a href="#" class="badge badge-primary">{{ $genre }}</a>
-                            @endforeach
+                    <div class="flex-1 mt-4 flex w-[350px] flex-col items-start lg:items-end lg:flex-row lg:w-full ">
+                        <div class="flex flex-col flex-1 w-full">
+                            <a href="#">
+                                <div class="badge badge-neutral">{{ $anime->type }}</div>
+                            </a>
+                            <p class="text-2xl font-bold text-white">{{ $anime->title }}</p>
+                            <p class="text-base text-gray-100">{{ $anime->english_title }}</p>
+                            <p class="text-base text-gray-100">{{ $anime->other_title }}</p>
+                            <div class="mt-2 flex flex-wrap gap-1 lg:w-[500px]">
+                                @foreach ($genres as $genre)
+                                    <a href="#" class="badge badge-primary">{{ $genre }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="mt-4 lg:mt-0">
+                            <livewire:toggle-favorite :anime-id="$anime->anime_id" />
                         </div>
                     </div>
                 </div>

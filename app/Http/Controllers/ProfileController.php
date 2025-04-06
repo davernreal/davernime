@@ -10,7 +10,10 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('pages.profile.index');
+        $fav_animes = Auth::user()->favorites()->paginate(6, ['*'], 'favorite');
+        return view('pages.profile.index', [
+            'fav_animes' => $fav_animes
+        ]);
     }
 
     public function edit()

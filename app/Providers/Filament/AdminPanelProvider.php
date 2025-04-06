@@ -41,6 +41,12 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Go to homepage')
+                    ->url(fn (): string => route('home.index'))
+                    ->icon('heroicon-o-home')
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

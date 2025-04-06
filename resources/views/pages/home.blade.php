@@ -23,20 +23,12 @@
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             @foreach ($currently_airing as $item)
                                 <a href="{{ route('anime.show', $item->anime_id) }}">
-                                    <figure class="h-[300px] relative">
-                                        <img src="{{ $item->image_url }}" class="w-full h-full object-cover rounded-xl" />
-                                        <div class="absolute w-full h-full left-0 top-0 p-2">
-                                            <div class="badge badge-primary">{{ $item->type }}</div>
-                                        </div>
-                                    </figure>
-                                    <p class="line-clamp-3 w-[90%]">
-                                        {{ $item->title }}
-                                    </p>
+                                    <x-anime.card :animeId="$item->anime_id" :title="$item->title" :imageUrl="$item->image_url" :type="$item->type" />
                                 </a>
                             @endforeach
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-primary">Show More</button>
+                            <a href="{{ route('anime.index', ['status' => 1]) }}" class="btn btn-primary">Show More</a>
                         </div>
                     </div>
 
@@ -46,13 +38,13 @@
                         </h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             @foreach ($recently_added as $item)
-                                <a href="#">
-                                    <x-anime.card :title="$item->title" :imageUrl="$item->image_url" :type="$item->type" />
+                                <a href="{{ route('anime.show', $item->anime_id) }}">
+                                    <x-anime.card :animeId="$item->anime_id" :title="$item->title" :imageUrl="$item->image_url" :type="$item->type" />
                                 </a>
                             @endforeach
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-primary">Show More</button>
+                            <a href="{{ route('anime.index', ['sort' => 'latest']) }}" class="btn btn-primary">Show More</a>
                         </div>
                     </div>
                 </div>

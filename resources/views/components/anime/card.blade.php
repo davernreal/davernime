@@ -3,10 +3,11 @@
     'title' => '',
     'type' => '',
     'height' => null,
+    'animeId' => null,
 ])
 <figure class="{{ $height ?? 'h-[300px]' }} relative">
     <img src="{{ $imageUrl }}" class="w-full h-full object-cover rounded-xl" />
-    <div class="absolute w-full h-full left-0 top-0 p-2">
+    <div class="absolute w-full h-full left-0 top-0 p-2 flex justify-between">
         <div class="badge badge-primary">{{ $type }}</div>
     </div>
 </figure>
