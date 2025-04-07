@@ -20,8 +20,8 @@
             </div>
         </label>
     @else
-        <a href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}">
-            🔒
+        <a class="btn" href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}">
+            🔒 Login to add this to favorites
         </a>
     @endauth
 </div>

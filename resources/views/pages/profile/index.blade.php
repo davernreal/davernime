@@ -43,17 +43,32 @@
             </div>
         </div>
 
-        <div class="my-8">
-            <h2 class="font-bold text-xl ">Favorite Anime</h2>
+        <div class="my-8 flex flex-col gap-4">
+            <h2 class="font-bold text-xl">Favorite Anime</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                @foreach ($fav_animes as $item)
+                @foreach ($favorite as $item)
                     <a href="{{ route('anime.show', $item->anime_id) }}">
                         <x-anime.card :animeId="$item->anime_id" :title="$item->title" :imageUrl="$item->image_url" :type="$item->type" />
                     </a>
                 @endforeach
             </div>
             <div class="mt-4">
-                {{ $fav_animes->links('pagination::simple-tailwind') }}
+                {{-- {{ $fav_animes->links('pagination::simple-tailwind') }} --}}
+                {{ $favorite->appends(['recent' => $recent->currentPage()])->links() }}
+            </div>
+        </div>
+        <div class="my-8 flex flex-col gap-4">
+            <h2 class="font-bold text-xl">Recently Seen</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach ($recent as $item)
+                    <a href="{{ route('anime.show', $item->anime_id) }}">
+                        <x-anime.card :animeId="$item->anime_id" :title="$item->title" :imageUrl="$item->image_url" :type="$item->type" />
+                    </a>
+                @endforeach
+            </div>
+            <div class="mt-4">
+                {{-- {{ $recent->links('pagination::simple-tailwind') }} --}}
+                {{ $recent->appends(['favorite' => $favorite->currentPage()])->links() }}
             </div>
         </div>
     </div>

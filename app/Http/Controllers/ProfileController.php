@@ -10,9 +10,11 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $fav_animes = Auth::user()->favorites()->paginate(6, ['*'], 'favorite');
+        $fav_animes = Auth::user()->favorites()->orderByPivot('updated_at', 'desc')->paginate(6, ['*'], 'favorite');
+        $recent_seen = Auth::user()->histories()->orderByPivot('updated_at', 'desc')->paginate(6, ['*'], 'recent');
         return view('pages.profile.index', [
-            'fav_animes' => $fav_animes
+            'favorite' => $fav_animes,
+            'recent' => $recent_seen
         ]);
     }
 

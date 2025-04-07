@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anime;
 use App\Models\Genre;
+use Auth;
 use Illuminate\Http\Request;
 
 class AnimeController extends Controller
@@ -23,8 +24,10 @@ class AnimeController extends Controller
         $hasFilter = false;
 
         if ($request->has('search') && !empty($request->search)) {
-            $query->where('title', 'LIKE', '%' . $request->search . '%')
-                ->orWhere('english_title', 'LIKE', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('english_title', 'LIKE', '%' . $request->search . '%');
+            });
             $hasFilter = true;
         }
 
@@ -85,6 +88,11 @@ class AnimeController extends Controller
     public function show(string $id)
     {
         $anime = Anime::where('anime_id', $id)->firstOrFail();
+
+        if (Auth::check()) {
+            Auth::user()->saveHistory($anime->anime_id);
+        }
+
         $genres = $anime->genres->pluck('name', 'id');
         $producers = $anime->producers->pluck('name', 'id');
         $studios = $anime->studios->pluck('name', 'id');

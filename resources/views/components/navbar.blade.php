@@ -69,7 +69,7 @@
                     <li>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="text-error">
+                            <button type="submit" class="text-error w-full">
                                 {{ __('Logout') }}
                             </button>
                         </form>

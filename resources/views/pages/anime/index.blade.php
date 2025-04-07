@@ -20,7 +20,6 @@
                     <option disabled selected>Genre</option>
                     @foreach ($genres as $index => $item)
                         @if (strtolower($item) !== strtolower('unknown'))
-                            <option value="{{ $index }}">{{ $item }}</option>
                             <option value="{{ $index }}"
                                 {{ (string) request('genre') === (string) $index ? 'selected' : '' }}>{{ $item }}
                             </option>

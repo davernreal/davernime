@@ -55,9 +55,26 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === 'admin';
     }
 
-    public function favorites() : BelongsToMany
+    public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Anime::class, 'user_favorites', 'user_id', 'anime_id', 'id', 'anime_id')
-                    ->withTimestamps();
+            ->withTimestamps();
+    }
+
+    public function histories(): BelongsToMany
+    {
+        return $this->belongsToMany(Anime::class, 'user_histories', 'user_id', 'anime_id')
+            ->withTimestamps()->withPivot('id');
+    }
+
+    public function saveHistory($animeId)
+    {
+        if (!$this->histories()->where('user_histories.anime_id', $animeId)->exists()) {
+            $this->histories()->attach($animeId);
+        } else {
+            $this->histories()->updateExistingPivot($animeId, [
+                'updated_at' => now()
+            ]);
+        }
     }
 }
