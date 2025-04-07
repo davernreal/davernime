@@ -16,6 +16,7 @@ Route::prefix('anime')->name('anime.')->group(function () {
 Route::get('movie', [AnimeController::class, 'movie'])->name('anime.movie');
 
 Route::middleware('auth')->group(function (){
+    Route::get('recommendation', [AnimeController::class, 'recommendation'])->name('recommendation');
     Route::prefix('profile')->name('profile.')->group(function() {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');

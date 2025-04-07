@@ -20,15 +20,15 @@
 
         <ul class="hidden lg:flex gap-4 items-center">
             <li>
-                <a href="{{ route('home.index') }}" class="select-none">Home</a>
+                <a href="{{ route('home.index') }}" class="select-none {{ Route::is('home.index') ? 'px-4 py-2 rounded-xl bg-base-300' : '' }}">Home</a>
             </li>
             <li>
-                <a href="{{ route('anime.index') }}" class="select-none">Anime</a>
+                <a href="{{ route('anime.index') }}" class="select-none {{ Route::is('anime.index') || Route::is('anime.show') ? 'px-4 py-2 rounded-xl bg-base-300' : '' }}">Anime</a>
             </li>
             <li>
-                <a href="{{ route('anime.movie') }}" class="select-none">Movie</a>
+                <a href="{{ route('anime.movie') }}" class="select-none {{ Route::is('anime.movie') ? 'px-4 py-2 rounded-xl bg-base-300' : '' }}">Movie</a>
             </li>
-            <li>Recommendation</li>
+            <li><a href="{{ route('recommendation') }}" class="select-none {{ Route::is('recommendation') ?  'px-4 py-2 rounded-xl bg-base-300' : '' }}">Recommendation</a></li>
         </ul>
 
         <div class="dropdown dropdown-end">
@@ -98,9 +98,9 @@
         </label>
     </div>
     <ul class="p-4 space-y-4">
-        <li><a href="{{ route('home.index') }}" class="block text-lg">Home</a></li>
-        <li><a href="{{ route('anime.index') }}" class="block text-lg">Anime</a></li>
-        <li><a href="{{ route('anime.movie') }}" class="block text-lg">Movie</a></li>
+        <li><a href="{{ route('home.index') }}" class="block text-lg {{ Route::is('home.index') ? 'font-bold' : ''}}">Home</a></li>
+        <li><a href="{{ route('anime.index') }}" class="block text-lg {{ Route::is('anime.index') || Route::is('anime.show') ? 'font-bold' : '' }}">Anime</a></li>
+        <li><a href="{{ route('anime.movie') }}" class="block text-lg {{ Route::is('anime.movie') ? 'font-bold' : '' }}">Movie</a></li>
         <li><a href="#" class="block text-lg">Recommendation</a></li>
     </ul>
 </div>

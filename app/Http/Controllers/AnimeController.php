@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Anime;
 use App\Models\Genre;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnimeController extends Controller
 {
@@ -147,5 +147,12 @@ class AnimeController extends Controller
         $page = 'Movie Anime';
 
         return view('pages.anime.index', compact('animes', 'filters', 'genres', 'statuses', 'sort', 'page'));
+    }
+
+    public function recommendation()
+    {
+        $fav_animes_count = Auth::user()->favorites()->count();
+        $recent_seen_count = Auth::user()->histories()->count();
+        return view('pages.recommendation.index', compact('fav_animes_count', 'recent_seen_count'));
     }
 }
