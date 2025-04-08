@@ -13,6 +13,8 @@ Route::prefix('anime')->name('anime.')->group(function () {
     Route::get('/{id}', [AnimeController::class, 'show'])->name('show'); // anime.show
 });
 
+Route::get('export', [AnimeController::class, 'export'])->name('anime.export');
+
 Route::get('movie', [AnimeController::class, 'movie'])->name('anime.movie');
 
 Route::middleware('auth')->group(function (){

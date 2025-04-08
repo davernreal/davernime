@@ -12,9 +12,9 @@ class card extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $imageUrl = "",
-        public string $title,
-        public string $type,
+        public ?string $imageUrl,
+        public ?string $title,
+        public ?string $type,
     )
     {
         $this->title = $title;

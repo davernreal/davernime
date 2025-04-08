@@ -3,7 +3,7 @@
 @push('style')
     <style>
         #background {
-            background-image: url("{{ $anime->image_url }}")
+            background-image: url("{{ Str::isUrl($anime->image_url) ? $anime->image_url : asset('storage/' . $anime->image_url) }}")
         }
     </style>
 @endpush
@@ -16,8 +16,8 @@
             <div class="container mx-auto py-4">
                 <div class="flex flex-row items-start lg:items-end gap-4">
                     <div class="">
-                        <img src="{{ $anime->image_url }}" class="aspect-3/4 h-[200px] rounded-xl object-cover lg:h-[290px]"
-                            alt="" />
+                        <img src="{{ Str::isUrl($anime->image_url) ? $anime->image_url : asset('storage/' . $anime->image_url) }}"
+                            class="aspect-3/4 h-[200px] rounded-xl object-cover lg:h-[290px]" alt="" />
                     </div>
                     <div class="flex-1 mt-4 flex w-[350px] flex-col items-start lg:items-end lg:flex-row lg:w-full ">
                         <div class="flex flex-col flex-1 w-full">

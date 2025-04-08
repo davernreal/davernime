@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AnimeExport;
 use App\Models\Anime;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnimeController extends Controller
 {
@@ -154,5 +156,18 @@ class AnimeController extends Controller
         $fav_animes_count = Auth::user()->favorites()->count();
         $recent_seen_count = Auth::user()->histories()->count();
         return view('pages.recommendation.index', compact('fav_animes_count', 'recent_seen_count'));
+    }
+
+    public function export()
+    {
+        try {
+            $export = Excel::store(new AnimeExport, 'dataset/anime.csv', 'public', \Maatwebsite\Excel\Excel::CSV);
+
+            if ($export) {
+                return response()->json(['message' => 'Export successful'], 200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
     }
 }

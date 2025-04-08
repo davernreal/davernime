@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\StatusBadgeEnum;
 use App\Filament\Resources\AnimeResource\Pages;
-use App\Filament\Resources\AnimeResource\RelationManagers\GenresRelationManager;
 use App\Models\Anime;
 use App\Models\Genre;
 use App\Models\Licensor;
@@ -56,27 +55,31 @@ class AnimeResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $restoreData = session('restore_form_data', []);
         return $form
             ->schema([
                 Wizard::make([
                     Step::make('Base Information')
-                        ->schema(static::getBaseInformationComponents()),
+                        ->schema(static::getBaseInformationComponents($restoreData)),
                     Step::make('Product Details')
-                        ->schema(static::getProductDetailsCompoenents()),
+                        ->schema(static::getProductDetailsCompoenents($restoreData)),
                     Step::make('Additional Information')
-                        ->schema(static::getAdditionalInformationComponents()),
+                        ->schema(static::getAdditionalInformationComponents($restoreData)),
                     Step::make('Image Upload')
-                        ->schema(static::getImageUploadComponents())
+                        ->schema(static::getImageUploadComponents($restoreData))
                 ])
                     ->columnSpanFull()
-                    ->submitAction(new HtmlString(Blade::render(<<<BLADE
-                    <x-filament::button
-                        type="submit"
-                        wire:submit="Submit"
-                    >
-                        Submit
-                    </x-filament::button>
-                    BLADE))),
+                    ->submitAction(new HtmlString(Blade::render(<<<'BLADE'
+                        <x-filament::button
+                            type="submit"
+                            wire:target="create"
+                            wire:loading.attr="disabled"
+                            wire:loading.class="opacity-50"
+                            class="relative"
+                        >
+                            <span>Submit</span>
+                        </x-filament::button>
+                        BLADE)))
             ]);
     }
 
@@ -127,66 +130,85 @@ class AnimeResource extends Resource
         ];
     }
 
-    protected static function getBaseInformationComponents(): array
+    protected static function getBaseInformationComponents($restoreData): array
     {
         return [
-            TextInput::make('title', 'Title')->columnSpanFull(),
-            TextInput::make('english_title', 'English Title')->columnSpanFull(),
-            TextInput::make('other_title', 'Other Title')->columnSpanFull(),
-            Textarea::make('synopsis', 'Synopsis')->columnSpan('full')->autosize()->columnSpanFull(),
+            TextInput::make('title', 'Title')->default($restoreData['title'] ?? null)->columnSpanFull(),
+            TextInput::make('english_title', 'English Title')->default($restoreData['english_title'] ?? null)->columnSpanFull(),
+            TextInput::make('other_title', 'Other Title')->default($restoreData['other_title'] ?? null)->columnSpanFull(),
+            Textarea::make('synopsis', 'Synopsis')->default($restoreData['synopsis'] ?? null)->columnSpan('full')->autosize()->columnSpanFull(),
             Select::make('genre', 'Genre')->placeholder('Select Genre')
                 ->options(Genre::all()->pluck('name', 'id'))
                 ->relationship('genres', 'name')
                 ->multiple()
+                ->default($restoreData['genre'] ?? null)
                 ->columnSpan('full'),
         ];
     }
 
-    protected static function getProductDetailsCompoenents(): array
+    protected static function getProductDetailsCompoenents($restoreData): array
     {
         return [
-            Select::make('type', 'Type')->placeholder('Select Type')->options(array_combine(self::$type, self::$type))->searchable(),
-            TextInput::make('episodes')->label('Total Episodes')->integer()->gt(0),
-            Select::make('studio', 'Studio')->placeholder('Select Studio')->multiple()->searchable()
+            Select::make('type', 'Type')->default($restoreData['type'] ?? null)->placeholder('Select Type')->options(array_combine(self::$type, self::$type))->searchable(),
+            TextInput::make('episodes')->default($restoreData['episodes'] ?? null)->label('Total Episodes')->integer()->gt(0),
+            Select::make('studio', 'Studio')
+                ->placeholder('Select Studio')
+                ->multiple()
+                ->searchable()
                 ->relationship('studios', 'name')
-                ->getSearchResultsUsing(fn(string $search): array => Studio::where('name', 'like', "%{$search}%")->limit(10)->pluck('name', 'id')->toArray())
-                ->getOptionLabelsUsing(fn(array $values): array => Studio::whereIn('id', $values)->pluck('name', 'id')->toArray()),
+                ->getSearchResultsUsing(
+                    fn(string $search): array =>
+                    Studio::where('name', 'like', "%{$search}%")->take(10)->pluck('name', 'id')->toArray()
+                )
+                ->getOptionLabelsUsing(
+                    fn(array $values): array =>
+                    Studio::whereIn('id', $values)->pluck('name', 'id')->toArray()
+                )
+                ->default($restoreData['studio'] ?? []),
             Select::make('producer', 'Producer')->placeholder('Select Producer')->multiple()->searchable()
+                ->default($restoreData['producer'] ?? null)
                 ->relationship('producers', 'name')
-                ->getSearchResultsUsing(fn(string $search): array => Producer::where('name', 'like', "%{$search}%")->limit(10)->pluck('name', 'id')->toArray())
+                ->getSearchResultsUsing(fn(string $search): array => Producer::where('name', 'like', "%{$search}%")->take(10)->pluck('name', 'id')->toArray())
                 ->getOptionLabelsUsing(fn(array $values): array => Producer::whereIn('id', $values)->pluck('name', 'id')->toArray()),
             Select::make('licensor', 'Licensor')->placeholder('Select Licensor')->multiple()->searchable()
+                ->default($restoreData['licensor'] ?? null)
                 ->relationship('licensors', 'name')
-                ->getSearchResultsUsing(fn(string $search): array => Licensor::where('name', 'like', "%{$search}%")->limit(10)->pluck('name', 'id')->toArray())
+                ->getSearchResultsUsing(fn(string $search): array => Licensor::where('name', 'like', "%{$search}%")->take(10)->pluck('name', 'id')->toArray())
                 ->getOptionLabelsUsing(fn(array $values): array => Licensor::whereIn('id', $values)->pluck('name', 'id')->toArray()),
-            DatePicker::make('aired_from', "Aired From")->format('Y-m-d')->native(false),
-            DatePicker::make('aired_to', "Aired To")->format('Y-m-d')->native(false),
+            DatePicker::make('aired_from', "Aired From")->default($restoreData['aired_from'] ?? null)->format('Y-m-d')->native(false),
+            DatePicker::make('aired_to', "Aired To")->default($restoreData['aired_to'] ?? null)->format('Y-m-d')->native(false),
             Select::make('premiered_season', 'Premiered Season')->placeholder('Select Season')
+                ->default($restoreData['premiered_season'] ?? null)
                 ->options(array_combine(self::$season, array_map('ucwords', self::$season))),
-            TextInput::make('premiered_year', 'Premiered Year')->numeric()->minValue(1900)->maxValue(2050)
+            TextInput::make('premiered_year', 'Premiered Year')->default($restoreData['premiered_year'] ?? null)->numeric()->minValue(1900)->maxValue(2050)
         ];
     }
 
-    protected static function getAdditionalInformationComponents(): array
+    protected static function getAdditionalInformationComponents($restoreData): array
     {
         return [
             Select::make('source', 'Source')->placeholder('Select Source')->options(
                 Source::all()->pluck('name', 'id')
-            )->searchable(),
+            )->default($restoreData['source'] ?? null)->searchable(),
             TimePicker::make('duration')
+                ->default($restoreData['duration'] ?? null)
                 ->label('Duration per episode')
                 ->seconds(true)
                 ->native(false),
-            Select::make('status', 'Status')->placeholder('Select Status')->options(StatusBadgeEnum::class),
-            Select::make('rating', 'Rating')->placeholder('Select Rating')->options(array_combine(self::$rating, self::$rating)),
+            Select::make('status', 'Status')->default($restoreData['status'] ?? null)->placeholder('Select Status')->options(StatusBadgeEnum::class),
+            Select::make('rating', 'Rating')->default($restoreData['rating'] ?? null)->placeholder('Select Rating')->options(array_combine(self::$rating, self::$rating)),
         ];
     }
 
-    protected static function getImageUploadComponents(): array
+    protected static function getImageUploadComponents($restoreData): array
     {
         return [
-            FileUpload::make('image_url')->label('Poster')
+            FileUpload::make('image_url')
+                ->label('Poster')
                 ->directory('anime-poster')
+                ->default($restoreData['image_url'] ?? null)
+                ->image()
+                ->imagePreviewHeight('250')
         ];
     }
 }
