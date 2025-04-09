@@ -10,6 +10,7 @@ use App\Models\Licensor;
 use App\Models\Producer;
 use App\Models\Source;
 use App\Models\Studio;
+use App\Services\AnimeExportService;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -19,6 +20,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
@@ -26,6 +28,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\HtmlString;
 
 class AnimeResource extends Resource
@@ -98,7 +102,50 @@ class AnimeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->closeModalByClickingAway(false)
+                    ->before(function (Tables\Actions\DeleteAction $action) {
+                        $csvPath = AnimeExportService::getCsvPath();
+
+                        if (! file_exists($csvPath)) {
+                            Notification::make()
+                                ->title('Failed to delete data.')
+                                ->body('CSV file not found')
+                                ->danger()
+                                ->send();
+                            $action->halt();
+                        }
+
+                        try {
+                            $exportSuccess = AnimeExportService::exportToCsv();
+
+                            if (! $exportSuccess) {
+                                throw new \Exception("Failed to export CSV");
+                            }
+
+                            $response = Http::timeout(10)
+                                ->attach(
+                                    'dataset',
+                                    file_get_contents($csvPath),
+                                    'anime.csv'
+                                )
+                                ->post('http://127.0.0.1:5000/anime');
+
+                            if (! $response->successful()) {
+                                $this->halt();
+                                throw new \Exception("API responded with error: " . $response->body());
+                            }
+                            return redirect()->route('filament.admin.resources.animes.index');
+                        } catch (\Throwable $e) {
+                            Log::error('Gagal proses export / API: ' . $e->getMessage());
+                            Notification::make()
+                                ->title('Failed to process Anime')
+                                ->body('Error: ' . $e->getMessage())
+                                ->danger()
+                                ->send();
+                            $action->halt();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

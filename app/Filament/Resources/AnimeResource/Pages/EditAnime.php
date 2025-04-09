@@ -47,7 +47,6 @@ class EditAnime extends EditRecord
 
     protected function afterSave()
     {
-        // dd($this->record);
         $record = $this->record;
 
         $csvPath = AnimeExportService::getCsvPath();
