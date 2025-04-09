@@ -72,12 +72,13 @@ class AnimeResource extends Resource
                     ->submitAction(new HtmlString(Blade::render(<<<'BLADE'
                         <x-filament::button
                             type="submit"
-                            wire:target="create"
+                            wire:target="submit"
                             wire:loading.attr="disabled"
                             wire:loading.class="opacity-50"
                             class="relative"
                         >
-                            <span>Submit</span>
+                            <span wire:loading.remove>Submit</span>
+                            <span wire:loading>Loading...</span>
                         </x-filament::button>
                         BLADE)))
             ]);

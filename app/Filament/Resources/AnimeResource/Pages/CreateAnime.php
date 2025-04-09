@@ -27,7 +27,6 @@ class CreateAnime extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['anime_id'] = Anime::max('anime_id') + 1;
-        // dd($data);
         return $data;
     }
 
@@ -65,7 +64,6 @@ class CreateAnime extends CreateRecord
 
         try {
             // throw new \Exception("This is a forced exception to fail the code below.");
-
             $exportSuccess = AnimeExportService::exportToCsv();
 
             if (! $exportSuccess) {
