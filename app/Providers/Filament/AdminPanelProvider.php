@@ -44,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Go to homepage')
-                    ->url(fn (): string => route('home.index'))
+                    ->url(fn (): string => route('home.index'), true)
                     ->icon('heroicon-o-home')
             ])
             ->middleware([

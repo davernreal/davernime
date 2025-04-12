@@ -15,7 +15,6 @@ class AnimeExportService
             return Excel::store(new AnimeExport, $path, 'public', \Maatwebsite\Excel\Excel::CSV);
         } catch (\Throwable $th) {
             throw $th;
-            return false;
         }
     }
 

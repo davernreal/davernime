@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Studio extends Model
 {
+    protected $fillable = ['name', 'slug'];
+
     protected $casts = [
-        'studios' => 'array'
+        'studios' => 'array',
     ];
 
     public function animes(): BelongsToMany

@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AnimeExport;
+use App\Jobs\ExportAnimeJob;
+use App\Jobs\SendAnimeCsvToApi;
 use App\Models\Anime;
 use App\Models\Genre;
+use App\Services\AnimeExportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Bus;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AnimeController extends Controller
@@ -161,11 +165,12 @@ class AnimeController extends Controller
     public function export()
     {
         try {
-            $export = Excel::store(new AnimeExport, 'dataset/anime.csv', 'public', \Maatwebsite\Excel\Excel::CSV);
+            $start_time = microtime(true);
+            SendAnimeCsvToApi::dispatch();
+            $end_time = microtime(true);
 
-            if ($export) {
-                return response()->json(['message' => 'Export successful'], 200);
-            }
+            $duration = round($end_time - $start_time, 2);
+            return response()->json(['message' => 'Export successful', 'time_taken' => "$duration seconds"], 200);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

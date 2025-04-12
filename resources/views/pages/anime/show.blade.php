@@ -80,8 +80,11 @@
                     <p class="text-sm lg:text-base">
                         <strong>Studios</strong> :
                         @foreach ($studios as $index => $studio)
-                            <span>{{ $studio }}</span>{{ $loop->last ? '' : ', ' }}
+                        <span>{{ $studio }}</span>{{ $loop->last ? '' : ', ' }}
                         @endforeach
+                    </p>
+                    <p class="text-sm lg:text-base">
+                        <strong>Source</strong> : {{ $anime->source }}
                     </p>
                     <p class="text-sm lg:text-base">
                         <strong>Rating</strong> : {{ $anime->rating }}
