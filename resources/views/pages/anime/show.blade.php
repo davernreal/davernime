@@ -80,7 +80,7 @@
                     <p class="text-sm lg:text-base">
                         <strong>Studios</strong> :
                         @foreach ($studios as $index => $studio)
-                        <span>{{ $studio }}</span>{{ $loop->last ? '' : ', ' }}
+                            <span>{{ $studio }}</span>{{ $loop->last ? '' : ', ' }}
                         @endforeach
                     </p>
                     <p class="text-sm lg:text-base">
@@ -90,6 +90,25 @@
                         <strong>Rating</strong> : {{ $anime->rating }}
                     </p>
                 </div>
+            </div>
+        </div>
+
+
+        <div class="mt-8">
+            <h2 class="text-xl lg:text-3xl font-bold">
+                Trailer
+            </h2>
+            <div class="mt-4">
+                @livewire('anime-show-trailer', ['lazy' => true, 'anime_id' => $anime->anime_id])
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-xl lg:text-3xl font-bold">
+                Streaming Platform
+            </h2>
+            <div class="mt-4">
+                @livewire('anime-show-streaming-platform', ['lazy' => true, 'anime_id' => $anime->anime_id])
             </div>
         </div>
 
