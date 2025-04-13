@@ -47,6 +47,6 @@ class EditAnime extends EditRecord
     {
         $timestamp = now()->timestamp;
         Cache::put('anime_job_timestamp', $timestamp);
-        SendAnimeCsvToApi::dispatch($timestamp);
+        SendAnimeCsvToApi::dispatch($timestamp, auth()->user()->id);
     }
 }

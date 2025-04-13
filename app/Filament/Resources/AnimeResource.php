@@ -75,7 +75,7 @@ class AnimeResource extends Resource
                         ->schema(static::getAdditionalInformationComponents($restoreData)),
                     Step::make('Image Upload')
                         ->schema(static::getImageUploadComponents($restoreData))
-                ])
+                ])->skippable()
                     ->columnSpanFull()
                     ->submitAction(new HtmlString(Blade::render(<<<'BLADE'
                         <x-filament::button
@@ -111,7 +111,7 @@ class AnimeResource extends Resource
                     ->before(function (Tables\Actions\DeleteAction $action) {
                         $timestamp = now()->timestamp;
                         Cache::put('anime_job_timestamp', $timestamp);
-                        SendAnimeCsvToApi::dispatch($timestamp);
+                        SendAnimeCsvToApi::dispatch($timestamp, auth()->user()->id);
                     }),
             ])
             ->bulkActions([

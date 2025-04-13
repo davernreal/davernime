@@ -11,6 +11,7 @@ use App\Services\AnimeExportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AnimeController extends Controller
@@ -166,7 +167,9 @@ class AnimeController extends Controller
     {
         try {
             $start_time = microtime(true);
-            SendAnimeCsvToApi::dispatch();
+            $timestamp = now()->timestamp;
+            Cache::put('anime_job_timestamp', $timestamp);
+            SendAnimeCsvToApi::dispatch($timestamp, 1);
             $end_time = microtime(true);
 
             $duration = round($end_time - $start_time, 2);
