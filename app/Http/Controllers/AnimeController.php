@@ -101,11 +101,15 @@ class AnimeController extends Controller
             Auth::user()->saveHistory($anime->anime_id);
         }
 
+        $user_status = null;
+        if (Auth::check()) {
+            $user_status = Auth::user()->getUserAnimeStatus($anime->anime_id);
+        }
         $genres = $anime->genres->pluck('name', 'id');
         $producers = $anime->producers->pluck('name', 'id');
         $studios = $anime->studios->pluck('name', 'id');
         $licensors = $anime->licensors->pluck('name', 'id');
-        return view('pages.anime.show', compact('anime', 'genres', 'producers', 'studios', 'licensors'));
+        return view('pages.anime.show', compact('anime', 'genres', 'producers', 'studios', 'licensors', 'user_status'));
     }
 
     public function movie(Request $request)

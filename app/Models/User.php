@@ -77,4 +77,17 @@ class User extends Authenticatable implements FilamentUser
             ]);
         }
     }
+
+    public function animeList(): BelongsToMany
+    {
+        return $this->belongsToMany(Anime::class, 'user_anime_list', 'user_id', 'anime_id')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
+
+    public function getUserAnimeStatus($anime_id)
+    {
+        $anime = $this->animeList()->where('user_anime_list.anime_id', $anime_id)->first();
+        return $anime ? $anime->pivot->status : null;
+    }
 }

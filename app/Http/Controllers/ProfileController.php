@@ -12,9 +12,11 @@ class ProfileController extends Controller
     {
         $fav_animes = Auth::user()->favorites()->orderByPivot('updated_at', 'desc')->paginate(6, ['*'], 'favorite');
         $recent_seen = Auth::user()->histories()->orderByPivot('updated_at', 'desc')->paginate(6, ['*'], 'recent');
+        $planned_list = Auth::user()->animeList()->where('user_anime_list.status', 'planned')->orderBy('updated_at', 'desc')->paginate(6, ['*'], 'watching');
         return view('pages.profile.index', [
             'favorite' => $fav_animes,
-            'recent' => $recent_seen
+            'recent' => $recent_seen,
+            'planned' => $planned_list
         ]);
     }
 
@@ -44,5 +46,23 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+    }
+
+    public function destroy(Request $request)
+    {
+        $user = Auth::user();
+        if($user->role === 'admin'){
+            return redirect()->route('home.index');
+        }
+
+        if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
+            unlink(public_path($user->avatar_url));
+        }
+
+        $user->delete();
+
+        Auth::logout();
+
+        return redirect()->route('home.index');
     }
 }

@@ -11,8 +11,8 @@
 
             <div class="text-center">
                 @if ($hasMore)
-                    <button wire:click="loadMore" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                        Load More
+                    <button wire:click="loadMore" wire:loading.attr="disabled"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"> Load More
                     </button>
                 @else
                     <p class="text-gray-500">No more recommendations.</p>

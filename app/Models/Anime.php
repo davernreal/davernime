@@ -29,7 +29,7 @@ class Anime extends Model
         'status',
         'image_url',
     ];
-    
+
     protected $casts = [
         'status' => StatusBadgeEnum::class
     ];
@@ -57,6 +57,13 @@ class Anime extends Model
     public function favoredBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_favorites', 'anime_id', 'user_id', 'anime_id', 'id')
-                    ->withTimestamps();
+            ->withTimestamps();
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_anime_list', 'anime_id', 'user_id')
+            ->withPivot('status')
+            ->withTimestamps();
     }
 }

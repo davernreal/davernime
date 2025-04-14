@@ -19,3 +19,14 @@ image_upload.addEventListener('change', function () {
         reader.readAsDataURL(file);
     }
 });
+
+const form = document.getElementById('delete-account');
+const delete_button = document.getElementById('delete-button');
+
+delete_button.addEventListener('click', function (e) {
+    e.preventDefault();
+    const confirmation = confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (confirmation) {
+        form.submit();
+    }
+})

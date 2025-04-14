@@ -44,7 +44,7 @@
         </div>
 
         <div class="my-8 flex flex-col gap-4">
-            <h2 class="font-bold text-xl">Favorite Anime</h2>
+            <h2 class="font-bold text-xl">💞 Favorite Anime</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 @foreach ($favorite as $item)
                     <a href="{{ route('anime.show', $item->anime_id) }}">
@@ -55,6 +55,20 @@
             <div class="mt-4">
                 {{-- {{ $fav_animes->links('pagination::simple-tailwind') }} --}}
                 {{ $favorite->appends(['recent' => $recent->currentPage()])->links() }}
+            </div>
+        </div>
+        <div class="my-8 flex flex-col gap-4">
+            <h2 class="font-bold text-xl">⌛ Planned to watch</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach ($planned as $item)
+                    <a href="{{ route('anime.show', $item->anime_id) }}">
+                        <x-anime.card :animeId="$item->anime_id" :title="$item->title" :imageUrl="$item->image_url" :type="$item->type" />
+                    </a>
+                @endforeach
+            </div>
+            <div class="mt-4">
+                {{-- {{ $fav_animes->links('pagination::simple-tailwind') }} --}}
+                {{ $planned->appends(['recent' => $recent->currentPage()])->links() }}
             </div>
         </div>
         <div class="my-8 flex flex-col gap-4">

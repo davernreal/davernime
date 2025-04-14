@@ -20,6 +20,11 @@ class AnimeListUser extends Component
 
     public $hasMore=true;
 
+    public function placeholder()
+    {
+        return view('components.anime.card-placeholder');
+    }
+
     public function mount()
     {
         $this->animes = collect();

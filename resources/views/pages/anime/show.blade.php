@@ -13,7 +13,7 @@
 
     <div class="relative w-full bg-gray-200 bg-cover bg-center" id="background">
         <div class="relative inset-0 flex w-full items-end bg-black/40 pb-8 backdrop-blur-lg pt-10">
-            <div class="container mx-auto py-4">
+            <div class="container py-4">
                 <div class="flex flex-row items-start lg:items-end gap-4">
                     <div class="">
                         <img src="{{ Str::isUrl($anime->image_url) ? $anime->image_url : asset('storage/' . $anime->image_url) }}"
@@ -33,7 +33,10 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="mt-4 lg:mt-0">
+                        <div class="mt-4 lg:mt-0 flex gap-2">
+                            @auth
+                                <livewire:anime-show-status-toggle :anime_id="$anime->anime_id" :status="$user_status" />
+                            @endauth
                             <livewire:toggle-favorite :anime-id="$anime->anime_id" />
                         </div>
                     </div>
@@ -42,12 +45,15 @@
         </div>
     </div>
 
-    <div class="container mx-auto flex flex-col gap-4 py-8">
+    <div class="container flex flex-col gap-4 py-8">
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
             <div class="col-span-8">
                 <div class="flex w-full flex-col gap-2">
                     <h3 class="text-xl font-bold lg:text-2xl">Synopsis</h3>
                     <p class="text-sm leading-[1.7] lg:text-base">{{ $anime->synopsis }}</p>
+                </div>
+                <div class="mt-4">
+
                 </div>
             </div>
             <div class="col-span-4">

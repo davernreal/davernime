@@ -12,13 +12,15 @@
         <h2 class="font-bold text-2xl">Edit Profile</h2>
         <h3>Update your name and email address</h3>
 
-        <form class="mt-4 flex flex-col gap-4 w-full lg:w-[35%]" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+        <form class="mt-4 flex flex-col gap-4 w-full lg:w-[35%]" action="{{ route('profile.update') }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="flex items-center gap-4">
                 <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
                     @if (Auth::user()->avatar_url !== null)
-                        <img src="/{{ Auth::user()->avatar_url }}" alt="User Avatar" class="w-full h-full object-cover" id="image-preview">
+                        <img src="/{{ Auth::user()->avatar_url }}" alt="User Avatar" class="w-full h-full object-cover"
+                            id="image-preview">
                     @else
                         @php
                             $user_name = urlencode(Auth::user()->name);
@@ -59,18 +61,23 @@
             </div>
         </form>
 
-        <div class="mt-8 flex flex-col gap-4">
-            <h2 class="font-bold text-2xl">Delete Account</h2>
-            <div class="card border-red-100 bg-red-50 dark:border-red-200/10 dark:bg-red-700/10 w-full lg:w-[35%]">
-                <div class="card-body p-4">
-                    <h4 class="card-title">Warning!</h4>
-                    <p>Please proceed with caution, this cannot be undone.</p>
-                    <div class="card-actions justify-start">
-                        <button class="btn btn-error">Delete Account</button>
+        @if (auth()->user()->role !== 'admin')
+            <div class="mt-8 flex flex-col gap-4">
+                <h2 class="font-bold text-2xl">Delete Account</h2>
+                <div class="card border-red-100 bg-red-50 dark:border-red-200/10 dark:bg-red-700/10 w-full lg:w-[35%]">
+                    <div class="card-body p-4">
+                        <h4 class="card-title">Warning!</h4>
+                        <p>Please proceed with caution, this cannot be undone.</p>
+                        <form class="card-actions justify-start" id="delete-account" action="{{ route('profile.destroy') }}"
+                            method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-error" type="submit" id="delete-button">Delete Account</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection
 

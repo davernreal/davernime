@@ -50,5 +50,5 @@
 }
 
 .container{
-    padding-inline: 1rem;
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
 }

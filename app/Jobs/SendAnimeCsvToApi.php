@@ -59,7 +59,7 @@ class SendAnimeCsvToApi implements ShouldQueue
         }
 
         try {
-            $response = Http::timeout(10)
+            $response = Http::timeout(30)
                 ->attach('dataset', file_get_contents($csvPath), 'anime.csv')
                 ->post('http://127.0.0.1:5000/anime');
 
