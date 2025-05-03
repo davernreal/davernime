@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('other_title')->nullable();
             $table->text('synopsis')->nullable();
             $table->enum('type', [
-                'Unknown',
                 'TV',
                 'OVA',
                 'Special',
@@ -33,10 +32,11 @@ return new class extends Migration
             $table->float('episodes')->nullable();
             $table->date('aired_from')->nullable();
             $table->date('aired_to')->nullable();
-            $table->enum('premiered_season', ['winter', 'spring', 'summer', 'fall', 'unknown'])->nullable();
+            $table->enum('premiered_season', ['winter', 'spring', 'summer', 'fall'])->nullable();
             $table->year('premiered_year')->nullable();
             $table->string('source')->nullable();
             $table->time('duration')->nullable();
+            $table->float('score')->nullable();
             $table->enum('status', ['Finished Airing', 'Currently Airing', 'Not yet aired'])->nullable();
             $table->enum('rating', [
                 'R - 17+ (violence & profanity)',
@@ -45,8 +45,8 @@ return new class extends Migration
                 'R+ - Mild Nudity',
                 'G - All Ages',
                 'Rx - Hentai',
-                'UNKNOWN'
             ])->nullable();
+            $table->string('trailer_url')->nullable();
             $table->string('image_url')->nullable();
             $table->timestamps();
         });

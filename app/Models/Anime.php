@@ -27,6 +27,7 @@ class Anime extends Model
         'duration',
         'rating',
         'status',
+        'score',
         'image_url',
     ];
 

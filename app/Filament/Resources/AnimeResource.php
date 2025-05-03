@@ -59,6 +59,7 @@ class AnimeResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+        // return '28405';
     }
 
     public static function form(Form $form): Form
@@ -75,7 +76,7 @@ class AnimeResource extends Resource
                         ->schema(static::getAdditionalInformationComponents($restoreData)),
                     Step::make('Image Upload')
                         ->schema(static::getImageUploadComponents($restoreData))
-                ])->skippable()
+                ])
                     ->columnSpanFull()
                     ->submitAction(new HtmlString(Blade::render(<<<'BLADE'
                         <x-filament::button
@@ -97,7 +98,11 @@ class AnimeResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image_url')->label(false),
-                TextColumn::make('title')->searchable(),
+                TextColumn::make('title')->searchable()->sortable(),
+                TextColumn::make('score')
+                    ->label('MAL Score')
+                    ->formatStateUsing(fn ($state) => "⭐ $state")
+                    ->placeholder('N/A'),
                 TextColumn::make('status')->badge()->color(fn($state) => $state->getColor()),
                 TextColumn::make('type')
             ])
@@ -163,7 +168,7 @@ class AnimeResource extends Resource
     protected static function getProductDetailsCompoenents($restoreData): array
     {
         return [
-            Select::make('type', 'Type')->default($restoreData['type'] ?? null)->placeholder('Select Type')->options(array_combine(self::$type, self::$type))->searchable(),
+            Select::make('type', 'Type')->default($restoreData['type'] ?? null)->placeholder('Select Type')->options(array_combine(self::$type, self::$type)),
             TextInput::make('episodes')->default($restoreData['episodes'] ?? null)->label('Total Episodes')->integer()->gt(0),
             Select::make('studio', 'Studio')
                 ->placeholder('Select Studio')
@@ -191,6 +196,8 @@ class AnimeResource extends Resource
                 ->getOptionLabelsUsing(fn(array $values): array => Licensor::whereIn('id', $values)->pluck('name', 'id')->toArray()),
             DatePicker::make('aired_from', "Aired From")->default($restoreData['aired_from'] ?? null)->format('Y-m-d')->native(false),
             DatePicker::make('aired_to', "Aired To")->default($restoreData['aired_to'] ?? null)->format('Y-m-d')->native(false),
+            // TextInput::make('aired_from', 'Aired From')->default($restoreData['aired_from'] ?? null),
+            // TextInput::make('aired_to', 'Aired To')->default($restoreData['aired_to'] ?? null),
             Select::make('premiered_season', 'Premiered Season')->placeholder('Select Season')
                 ->default($restoreData['premiered_season'] ?? null)
                 ->options(array_combine(self::$season, array_map('ucwords', self::$season))),
@@ -202,15 +209,18 @@ class AnimeResource extends Resource
     {
         return [
             Select::make('source', 'Source')->placeholder('Select Source')->options(
-                Source::all()->pluck('name', 'id')
-            )->default($restoreData['source'] ?? null)->searchable(),
+                Source::all()->pluck('name', 'name')
+            )->default($restoreData['source'] ?? null),
             TimePicker::make('duration')
                 ->default($restoreData['duration'] ?? null)
                 ->label('Duration per episode')
                 ->seconds(true)
                 ->native(false),
+
+            // TextInput::make('duration', 'Duration')->default($restoreData['duration'] ?? null)->label('Duration per episode'),
             Select::make('status', 'Status')->default($restoreData['status'] ?? null)->placeholder('Select Status')->options(StatusBadgeEnum::class),
             Select::make('rating', 'Rating')->default($restoreData['rating'] ?? null)->placeholder('Select Rating')->options(array_combine(self::$rating, self::$rating)),
+            TextInput::make('score', 'MAL Score')->default($restoreData['score'] ?? null)->label('MAL Score')->numeric()->inputMode('decimal')->maxValue(10),
         ];
     }
 
