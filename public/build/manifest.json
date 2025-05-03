@@ -1,0 +1,19 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-BQSCAKxC.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DBOBg3Y5.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/profile/update.js": {
+    "file": "assets/update-Ch1qiWTs.js",
+    "name": "update",
+    "src": "resources/js/profile/update.js",
+    "isEntry": true
+  }
+}
