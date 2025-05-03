@@ -1,7 +1,7 @@
 <div>
     @auth
-        <label class="swap">
-            <input type="checkbox" wire:click="toggleFavorite" @checked($isFavorited) />
+        <label class="swap" id="favorite-btn">
+            <input type="checkbox" wire:click="toggleFavorite" @checked($isFavorited) id="favorite-checkbox"/>
 
             <div class="swap-off flex items-center btn btn-sm lg:btn-md btn-error btn-soft w-full w-[150px]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
@@ -20,7 +20,7 @@
             </div>
         </label>
     @else
-        <a class="btn" href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}">
+        <a class="btn" href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}" id="favorite-btn">
             🔒 Login to add this to favorites
         </a>
     @endauth

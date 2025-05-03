@@ -1,7 +1,7 @@
 <div>
     @if (!$animes->isEmpty())
         <div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 py-4">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 py-4" id="related-anime-list">
                 @foreach ($animes as $item)
                     <a href="{{ route('anime.show', $item->anime_id) }}">
                         <x-anime.card :animeId="$item->anime_id" :title="$item->title ?? 'No Title'" :imageUrl="$item->image_url ?? 'default.jpg'" :type="$item->type ?? 'Unknown'" />

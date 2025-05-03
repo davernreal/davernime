@@ -23,6 +23,12 @@ class AnimeList extends Component
     public $animes;
     public $hasMore = true;
 
+    protected $url;
+
+    public function __construct()
+    {
+        $this->url = env('PYTHON_BACKEND_URL', 'http://127.0.0.1:5000');
+    }
     public function mount($anime_id)
     {
         $this->anime_id = $anime_id;
@@ -33,7 +39,7 @@ class AnimeList extends Component
     public function loadMore()
     {
         try {
-            $response = Http::get('http://127.0.0.1:5000/anime/' . $this->anime_id, [
+            $response = Http::get("{$this->url}/anime/{$this->anime_id}", [
                 'page' => $this->page,
                 'page_size' => $this->perPage,
             ]);

@@ -22,10 +22,21 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
-        User::factory()->create([
-            'name' => 'User',
-            'email' => 'user@gmail.com',
-            'password' => 'user',
+        // User::factory()->create([
+        //     'name' => 'User',
+        //     'email' => 'user@gmail.com',
+        //     'password' => 'user',
+        // ]);
+
+        // User::create([
+        //     'name' => "Lukman",
+        //     'email' => "lukman@gmail.com",
+        //     'password' => bcrypt("password"),
+        // ]);
+
+        $this->call([
+            MasterSeeder::class,
+            // AnimeSeeder::class
         ]);
     }
 }

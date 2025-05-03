@@ -22,7 +22,7 @@
     @stack('style')
 </head>
 
-<body>
+<body class="overflow-x-hidden">
     <div class="flex min-h-screen flex-col justify-between">
         <div>
             @yield('content')

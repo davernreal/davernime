@@ -45,6 +45,7 @@ class Convert
             $minutes = $totalMinutes % 60;
 
             // Return the time formatted as 'HH:MM:SS'
+            return $hours . ':' . $minutes . ':' . $totalSeconds;
         } catch (\Throwable $th) {
             print_r($data);
             throw $th;

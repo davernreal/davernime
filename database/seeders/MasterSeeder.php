@@ -41,7 +41,7 @@ class MasterSeeder extends Seeder
             return;
         }
 
-        $filePath = public_path("master/unique_{$type}s.json");
+        $filePath = public_path("master/{$type}s.json");
 
         if (!File::exists($filePath)) {
             echo "File not found: {$type}\n";

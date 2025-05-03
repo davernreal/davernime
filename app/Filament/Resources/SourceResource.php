@@ -20,7 +20,7 @@ class SourceResource extends Resource
 
     protected static ?string $navigationGroup = 'Master';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-queue-list';
     
     public static function getNavigationBadge(): ?string
     {
@@ -41,6 +41,7 @@ class SourceResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable()
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

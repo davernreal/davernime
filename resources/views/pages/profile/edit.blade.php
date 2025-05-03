@@ -55,7 +55,7 @@
                 @enderror
             </fieldset>
             <div>
-                <button class="btn btn-primary" class="submit">
+                <button class="btn btn-primary" type="submit" id="save-button">
                     Save
                 </button>
             </div>

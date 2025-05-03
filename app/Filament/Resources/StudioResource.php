@@ -41,6 +41,7 @@ class StudioResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable()
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

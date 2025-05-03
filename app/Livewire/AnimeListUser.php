@@ -20,6 +20,13 @@ class AnimeListUser extends Component
 
     public $hasMore=true;
 
+    protected $url;
+
+    public function __construct()
+    {
+        $this->url = env('PYTHON_BACKEND_URL', 'http://127.0.0.1:5000');
+    }
+
     public function placeholder()
     {
         return view('components.anime.card-placeholder');
@@ -34,16 +41,14 @@ class AnimeListUser extends Component
     public function loadMore()
     {
         $user_fav = Auth::user()->favorites()->orderByPivot('user_favorites.updated_at', 'desc')->pluck('user_favorites.anime_id')->toArray();
-        $recent = Auth::user()->histories()->orderByPivot('user_histories.updated_at', 'desc')->take(5)->pluck('user_histories.anime_id')->toArray();
         try {
             $response = Http::asForm()->withOptions([
                 'query' => [
                     'page' => $this->page,
                     'page_size' => $this->perPage,
                 ]
-            ])->post('http://127.0.0.1:5000/anime/user?page', [
+            ])->post("{$this->url}/anime/user?page", [
                 'user_favorites' => json_encode($user_fav),
-                'user_history' => json_encode($recent),
             ]);
 
             $data = $response->json();

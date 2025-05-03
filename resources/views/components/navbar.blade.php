@@ -31,7 +31,7 @@
             <li><a href="{{ route('recommendation') }}" class="select-none {{ Route::is('recommendation') ?  'px-4 py-2 rounded-xl bg-base-300' : '' }}">Recommendation</a></li>
         </ul>
 
-        <div class="dropdown dropdown-end">
+        <div class="dropdown dropdown-end" id="user-dropdown">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full @guest bg-gray-200 @endguest">
                     @auth

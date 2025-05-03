@@ -24,6 +24,9 @@
                             <a href="#">
                                 <div class="badge badge-neutral">{{ $anime->type }}</div>
                             </a>
+                            <div class="flex flex-row gap-2 py-1">
+                                <span class="text-xl font-bold text-white">⭐ {{ $anime->score ?? "N/A" }}</span>
+                            </div>
                             <p class="text-2xl font-bold text-white">{{ $anime->title }}</p>
                             <p class="text-base text-gray-100">{{ $anime->english_title }}</p>
                             <p class="text-base text-gray-100">{{ $anime->other_title }}</p>
@@ -63,7 +66,7 @@
                         <strong>Type</strong> : {{ $anime->type }}
                     </p>
                     <p class="text-sm lg:text-base">
-                        <strong>Episodes</strong> : {{ $anime->episodes }}
+                        <strong>Episodes</strong> : {{ $anime->episodes ?? "N/A"}}
                     </p>
                     <p class="text-sm lg:text-base">
                         <strong>Status</strong> : {{ $anime->status }}

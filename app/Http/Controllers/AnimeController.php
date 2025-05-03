@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Helper\Season;
 
 class AnimeController extends Controller
 {
@@ -165,7 +166,14 @@ class AnimeController extends Controller
     {
         $fav_animes_count = Auth::user()->favorites()->count();
         $recent_seen_count = Auth::user()->histories()->count();
-        return view('pages.recommendation.index', compact('fav_animes_count', 'recent_seen_count'));
+        $season = Season::getSeason();
+
+        $animes = Anime::where('premiered_season', $season['season'])->where('premiered_year', $season['year'])->orderBy('score', 'desc')->get();
+        $animes = $animes->shuffle()->take(30);
+        $animes = $animes->toArray();
+
+        // dd($anime->toArray());
+        return view('pages.recommendation.index', compact('fav_animes_count', 'recent_seen_count', 'animes'));
     }
 
     public function export()
