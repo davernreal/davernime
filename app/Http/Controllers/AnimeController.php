@@ -166,7 +166,7 @@ class AnimeController extends Controller
     {
         $fav_animes_count = Auth::user()->favorites()->count();
         $recent_seen_count = Auth::user()->histories()->count();
-        $season = Season::getSeason();
+        $season = $this->getSeason();
 
         $animes = Anime::where('premiered_season', $season['season'])->where('premiered_year', $season['year'])->orderBy('score', 'desc')->get();
         $animes = $animes->shuffle()->take(30);
@@ -189,6 +189,28 @@ class AnimeController extends Controller
             return response()->json(['message' => 'Export successful', 'time_taken' => "$duration seconds"], 200);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    private function getSeason()
+    {
+        $currentMonth = date('n');
+        $currentYear = date('Y');
+
+        $seasons = [
+            'winter' => [1, 2, 3],
+            'spring' => [4, 5, 6],
+            'summer' => [7, 8, 9],
+            'fall'   => [10, 11, 12],
+        ];
+
+        foreach ($seasons as $season => $months) {
+            if (in_array($currentMonth, $months)) {
+                return [
+                    'season' => $season,
+                    'year' => $currentYear,
+                ];
+            }
         }
     }
 }
