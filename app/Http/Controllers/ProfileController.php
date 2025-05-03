@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -33,12 +34,14 @@ class ProfileController extends Controller
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
 
-            if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
-                unlink(public_path($user->avatar_url));
+            if ($user->avatar_url && Storage::disk('public')->exists($user->avatar_url)) {
+                // unlink(public_path($user->avatar_url));
+                Storage::disk('public')->delete($user->avatar_url);
             }
 
             $filename = time() . '_avatar.' . $avatar->getClientOriginalExtension();
-            $avatar->move(public_path('users/avatar'), $filename);
+            // $avatar->move(public_path('users/avatar'), $filename);
+            $avatar->storeAs('users/avatar', $filename, 'public');
 
             $user->avatar_url = 'users/avatar/' . $filename;
         }

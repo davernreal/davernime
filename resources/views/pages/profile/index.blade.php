@@ -17,7 +17,8 @@
                 class="w-[100px] h-[100px] rounded-full overflow-hidden border-4 border-white 
                         absolute -top-12 bg-gray-300">
                 @if (Auth::user()->avatar_url !== null)
-                    <img src="/{{ Auth::user()->avatar_url }}" alt="User Avatar" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url(Auth::user()->avatar_url) }}" alt="User Avatar"
+                        class="w-full h-full object-cover">
                 @else
                     @php
                         $user_name = urlencode(Auth::user()->name);

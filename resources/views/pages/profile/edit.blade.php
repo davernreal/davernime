@@ -19,7 +19,7 @@
             <div class="flex items-center gap-4">
                 <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
                     @if (Auth::user()->avatar_url !== null)
-                        <img src="/{{ Auth::user()->avatar_url }}" alt="User Avatar" class="w-full h-full object-cover"
+                        <img src="{{ Storage::url(Auth::user()->avatar_url) }}" alt="User Avatar" class="w-full h-full object-cover"
                             id="image-preview">
                     @else
                         @php

@@ -36,7 +36,7 @@
                 <div class="w-10 rounded-full @guest bg-gray-200 @endguest">
                     @auth
                         @if (Auth::user()->avatar_url !== null)
-                            <img src="/{{ Auth::user()->avatar_url }}" alt="User Avatar">
+                            <img src="{{ Storage::url(Auth::user()->avatar_url) }}" alt="User Avatar">
                         @else
                             @php
                                 $user_name = urlencode(Auth::user()->name);
