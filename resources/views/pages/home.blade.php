@@ -57,7 +57,7 @@
                     <div>
                         @foreach ($genres as $genre)
                             <a href="{{ route('anime.index', 'genre='.$genre->id) }}">
-                                <button class="btn m-1">{{ $genre->name }}</button>
+                                <button class="btn btn-primary m-1">{{ $genre->name }}</button>
                             </a>
                         @endforeach
                     </div>

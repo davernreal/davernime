@@ -81,7 +81,7 @@
 
         <div>
             @isset($animes)
-                {{ $animes->links() }}
+                {{ $animes->links('pagination::tailwind') }}
             @endisset
         </div>
     </div>

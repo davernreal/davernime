@@ -12,7 +12,7 @@
                 alt="" class="grayscale w-full select-none pointer-events-none h-full object-cover" draggable="false">
         </div>
         <div
-            class="card rounded-none rounded-b-xl lg:rounded-r-xl w-full bg-white dark:bg-base-100 p-10 flex-1 lg:w-[400px] flex flex-col gap-4">
+            class="card rounded-none rounded-b-xl lg:rounded-r-xl w-full bg-base-100 p-10 flex-1 lg:w-[400px] flex flex-col gap-4">
             <x-alert />
             <div>
                 <form class="flex flex-col items-center gap-4" action="{{ $url }}" method="POST">

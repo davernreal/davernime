@@ -1,13 +1,5 @@
 import './bootstrap';
 
-function getIsDarkMode() {
-    return localStorage.getItem('isDarkMode') === 'true';
-}
-
-function setIsDarkMode(status) {
-    localStorage.setItem('isDarkMode', status);
-}
-
 const menuToggle = document.getElementById('menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
 const overlay = document.getElementById('overlay');
@@ -31,26 +23,3 @@ if (overlay) {
         overlay.classList.add('hidden');
     });
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.querySelector('.theme-controller');
-
-    if (getIsDarkMode()) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        themeToggle.checked = true;
-        
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        themeToggle.checked = false;
-    }
-
-    themeToggle.addEventListener('change', function () {
-        if (this.checked) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            setIsDarkMode(true);
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            setIsDarkMode(false);
-        }
-    });
-});

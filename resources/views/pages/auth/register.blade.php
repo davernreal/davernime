@@ -12,7 +12,7 @@
                 alt="" class="grayscale w-full select-none pointer-events-none h-full object-cover" draggable="false">
         </div>
         <div
-            class="card rounded-none rounded-b-xl lg:rounded-r-xl w-full bg-white dark:bg-base-100 p-10 flex-1 lg:w-[400px]">
+            class="card rounded-none rounded-b-xl lg:rounded-r-xl w-full bg-base-100 p-10 flex-1 lg:w-[400px]">
             <form class="flex flex-col items-center gap-4" action="{{ route('register.store') }}" method="POST">
                 @csrf
                 <div class="w-full">
