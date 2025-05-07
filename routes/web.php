@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,23 @@ Route::middleware('auth')->group(function (){
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
         Route::patch('/edit', [ProfileController::class, 'update'])->name('update');
         Route::delete('/delete', [ProfileController::class, 'destroy'])->name('destroy');
+    });
+});
+
+Route::group(['prefix' => 'artisan', 'as' => 'artisan.'], function () {
+    Route::get('/config-clear', function () {
+        Artisan::call('config:clear');
+        return "Config cache cleared successfully";
+    });
+
+    Route::get("/queue-work", function () {
+        Artisan::call('queue:work');
+        return "Queue worker started successfully";
+    });
+
+    Route::get("/queue-restart", function () {
+        Artisan::call('queue:retry all');
+        return "Queue worker retry all successfully";
     });
 });
 
