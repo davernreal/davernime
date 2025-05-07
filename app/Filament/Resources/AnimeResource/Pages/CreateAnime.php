@@ -28,8 +28,11 @@ class CreateAnime extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+
+        // dd($data);
         $data['anime_id'] = Anime::max('anime_id') + 1;
-        $data['source'] = Source::find($data['source'])->name;
+        $data['source'] = Source::where('name', $data['source'])->first()->name;
+        $data['image_url'] = $data['image_url'] ?? null;
         return $data;
     }
 

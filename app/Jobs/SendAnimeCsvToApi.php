@@ -59,9 +59,11 @@ class SendAnimeCsvToApi implements ShouldQueue
         }
 
         try {
+            $url = config('app.python_backend_url', 'http://127.0.0.1:5000');
+            Log::info("[INFO] => URL : {$url}/anime");
             $response = Http::timeout(30)
                 ->attach('dataset', file_get_contents($csvPath), 'anime.csv')
-                ->post('http://127.0.0.1:5000/anime');
+                ->post("{$url}/anime");
 
             if ($response->successful()) {
                 Log::info('[SUCCESS] Successfully sent anime CSV to Flask API.');

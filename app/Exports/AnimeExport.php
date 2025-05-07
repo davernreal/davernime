@@ -38,10 +38,8 @@ class AnimeExport implements FromQuery, WithHeadings, WithMapping
     {
         return [   
             'anime_id',
-            'name',
+            'title',
             'genres',
-            'licensors',
-            'producers',
             'studios',
             'source',
             'rating',
@@ -55,9 +53,7 @@ class AnimeExport implements FromQuery, WithHeadings, WithMapping
             $anime->anime_id,
             $anime->title,
             $anime->genres->pluck('name')->implode(', '),
-            $anime->licensors->pluck('name')->implode(', '),
             $anime->studios->pluck('name')->implode(', '),
-            $anime->producers->pluck('name')->implode(', '),
             $anime->source,
             $anime->rating,
             $anime->type

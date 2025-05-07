@@ -231,7 +231,7 @@ class AnimeResource extends Resource
                 ->label('Poster')
                 ->directory('anime-poster')
                 ->default($restoreData['image_url'] ?? null)
-                ->image()
+                // ->image()
                 ->imagePreviewHeight('250')
         ];
     }

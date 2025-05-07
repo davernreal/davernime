@@ -123,4 +123,10 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /**
+     * 
+     * Python Backend URL Config
+     */
+
+    'python_backend_url' => env('PYTHON_BACKEND_URL', 'http://127.0.0.1:5000')
 ];
